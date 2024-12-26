@@ -4,13 +4,9 @@ import NotFoundPage from "../pages/NotFoundPage";
 import HomePage from "../pages/HomePage";
 import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
-import FeaturePage from "../pages/FeaturesPage";
-import AboutPage from "../pages/AboutPage";
-import ClientPage from "../pages/ClientPage";
-import ProductPage from "../pages/ProductPage";
 import LandingPage from "../pages/LandingPage";
-import ContactPage from "../pages/ContactPage";
 import PrivateRoute from "../components/PrivateRoute";
+import ChooseSpecialty from "../pages/ChooseSpecialty";
 
 const AppRouter = () => {
   return (
@@ -27,6 +23,7 @@ const AppRouter = () => {
 
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
+      <Route path="/specialty" element={<ChooseSpecialty />} />
       <Route path="/*" element={<NotFoundPage />} />
     </Routes>
   );

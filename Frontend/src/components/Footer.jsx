@@ -1,18 +1,14 @@
 import React from "react";
 import styles from "../style";
-import { logo } from "../assets";
 import { footerLinks, socialMedia } from "../constants";
+import Logo from "./Logo";
 
 const Footer = () => {
   return (
     <section className={` p-6 flex-col`}>
       <div className={`${styles.flexStart} md:flex-row flex-col mb-8 w-full`}>
         <div className="flex-1 flex flex-col justify-start mr-10">
-          <img
-            src={logo}
-            alt="logo"
-            className="w-[266px] h-[172px] object-contain"
-          />
+          <Logo />
           <p className={`${styles.paragraph} mt-4 max-w-[310px]`}>
             A new way to make the easy contents, reliable and secure.
           </p>

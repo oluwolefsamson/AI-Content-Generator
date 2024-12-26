@@ -1,20 +1,16 @@
 // src/components/Navbar.jsx
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { close, logo, menu } from "../assets";
+import { close, menu } from "../assets";
 import { navLinks } from "../constants";
+import Logo from "./Logo";
 
 const Navbar = () => {
   const [toggle, setToggle] = useState(false);
 
   return (
     <nav className="w-full flex py-6 justify-between items-center navbar ">
-      <img
-        src={logo}
-        alt="hoobank"
-        className="w-[90px] h-[80px] rounded"
-        style={{ borderRadius: "50%" }}
-      />
+      <Logo />
 
       {/* Desktop Menu */}
       <ul className="list-none sm:flex hidden justify-end items-center flex-1">
@@ -29,8 +25,11 @@ const Navbar = () => {
           </li>
         ))}
         <div className="ml-10">
-          <Link to="/home" className="bg-blue-500 text-white py-2 px-4 rounded">
-            Contact
+          <Link
+            to="/specialty"
+            className="bg-blue-500 text-white py-2 px-4 rounded"
+          >
+            Get Started
           </Link>
         </div>
       </ul>
