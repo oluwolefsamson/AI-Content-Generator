@@ -26,7 +26,7 @@ const Navbar = () => {
         ))}
         <div className="ml-10">
           <Link
-            to="/specialty"
+            to="/login"
             className="bg-blue-500 text-white py-2 px-4 rounded"
           >
             Get Started
