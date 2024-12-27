@@ -15,6 +15,9 @@ connectDB();
 // Use routes
 app.use("/api/content", contentRoutes);
 
+app.get("/", (req, res) => {
+  res.send("Welcome to the Dynamic Content Generator API");
+});
 // Start the server
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);

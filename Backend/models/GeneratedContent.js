@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const generatedContentSchema = new mongoose.Schema({
-  input: {
+  specialty: {
     type: String,
     required: true,
   },
