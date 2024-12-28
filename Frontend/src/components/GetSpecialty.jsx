@@ -21,7 +21,9 @@ const GetSpecialty = () => {
           />
         </div>
         <p className="font-poppins font-medium text-[18px] leading-[23px]">
-          <span className="text-gradient">Specialty</span>
+          <span className="text-gradient">
+            Specialty <br /> Content
+          </span>
         </p>
       </div>
     </div>

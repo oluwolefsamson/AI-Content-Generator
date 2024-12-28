@@ -42,12 +42,19 @@ const generateDynamicContent = async (req, res) => {
       "key tools",
       "future of",
       "impact on industry",
+      "tech",
+      "designs",
+      "development",
+      "data",
+      "security",
+      "innovation",
+      "solutions",
     ];
 
     // Randomly select one of the topics for variation
     const randomTopic =
       randomTopics[Math.floor(Math.random() * randomTopics.length)];
-    const specialtyPrompt = `Generate a short, 150-word paragraph about ${specialty} with a focus on ${randomTopic}. Make it clear, professional, and inspiring. Focus on practical aspects and avoid jargon or ambiguous text.`;
+    const specialtyPrompt = `Generate a short, 150-word paragraph about ${specialty} with a focus on ${randomTopic}. Please ensure the content ends at the first full stop (period). Keep the language clear, professional, and inspiring. Avoid jargon and aim for a complete thought within a single sentence.`;
 
     // Call Hugging Face API
     const apiResponse = await axios.post(
@@ -71,12 +78,13 @@ const generateDynamicContent = async (req, res) => {
       .replace(specialtyPrompt, "")
       .trim();
 
+    // Now, stop at the first period
+    const stopAtPeriod = contentWithoutPrompt.split(".")[0] + ".";
+
     // Post-process to clean up unwanted parts
-    const cleanedText = contentWithoutPrompt
+    const cleanedText = stopAtPeriod
       .replace(/[^a-zA-Z0-9 . , ']/g, "") // Remove special characters
-      .split(" ") // Split into words
-      .slice(0, 50) // Limit to 150 words
-      .join(" "); // Rejoin into a sentence
+      .trim(); // Ensure no leading/trailing spaces
 
     // Save to MongoDB
     const newContent = new GeneratedContent({

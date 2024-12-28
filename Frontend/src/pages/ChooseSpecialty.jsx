@@ -1,10 +1,13 @@
 import React, { useState } from "react";
+import axios from "axios";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import styles from "../style";
 import { discount, heroImg } from "../assets";
 import GetSpecialty from "../components/GetSpecialty";
-
+import { FiClipboard, FiShare2 } from "react-icons/fi"; // Importing icons from react-icons
+import { BounceLoader } from "react-spinners";
+import { BeatLoader } from "react-spinners";
 const specialties = [
   "Frontend Development",
   "Backend Development",
@@ -19,79 +22,172 @@ const specialties = [
 
 const ChooseSpecialty = () => {
   const [selectedSpecialty, setSelectedSpecialty] = useState("");
+  const [generatedContent, setGeneratedContent] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const handleSelectChange = (event) => {
     setSelectedSpecialty(event.target.value);
+    setGeneratedContent("");
+    setError("");
   };
 
-  const handleGenerateClick = () => {
-    alert(`Generating content for: ${selectedSpecialty}`);
+  const handleGenerateClick = async () => {
+    if (!selectedSpecialty) return;
+
+    setLoading(true);
+    setError("");
+
+    try {
+      const response = await axios.post(
+        "http://localhost:8000/api/content/generate",
+        {
+          specialty: selectedSpecialty,
+        }
+      );
+
+      if (response.data.success) {
+        setGeneratedContent(response.data.data);
+      } else {
+        setError("Failed to fetch content. Please try again.");
+      }
+    } catch (err) {
+      setError("An error occurred while fetching content. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(generatedContent);
+    alert("Content copied to clipboard!");
+  };
+
+  const handleShare = () => {
+    if (navigator.share) {
+      navigator.share({
+        title: "Generated Content",
+        text: generatedContent,
+        url: window.location.href,
+      });
+    } else {
+      alert("Sharing not supported on this browser.");
+    }
   };
 
   return (
-    <div className="flex flex-col items-start  min-h-screen bg-black text-white p-8 relative">
-      <div
-        className="flex flex-col sm:flex-row items-start justify-between w-full"
-        data-aos="fade-right"
-      >
-        <div className="flex-1">
-          <h1 className="font-poppins font-semibold ss:text-[65px] text-[45px] text-white ss:leading-[100.8px] leading-[75px] relative mt-[10%]">
+    <div className="flex flex-col items-center min-h-screen bg-black text-white p-4 sm:p-8 relative my-[80px] mx-10">
+      {/* Header Section */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full">
+        {/* Left Section */}
+
+        <div className="flex flex-col items-start md">
+          <div
+            className="flex flex-row items-center py-2 px-4 bg-discount-gradient rounded-[10px] mb-2"
+            data-aos="fade-right"
+          >
+            <img src={discount} alt="discount" className="w-[32px] h-[32px]" />
+            <p className={`${styles.paragraph} ml-2`}>
+              <span className="text-white">10%</span> Discount For{" "}
+              <span className="text-white">1 Month</span> Account
+            </p>
+          </div>
+          <h1 className="font-poppins font-semibold text-[32px] sm:text-[45px] lg:text-[65px] text-white leading-[1.2] mt-6 sm:mt-[10%]">
             Choose Your
-            <br className="sm:block hidden" />
-            <span className="text-gradient">Tech</span>
             <br />
-            Specialty
+            <span className="text-gradient">Tech</span> <br />
+            <span>Specialty</span>
           </h1>
-          {/* Absolutely positioned GetSpecialty component */}
-          <div className="absolute top-[37%] left-[17%] ss:right-[10%] sm:right-[5%] ">
+          {/* GetSpecialty - Hidden on Mobile */}
+          <div className="hidden sm:block absolute top-[20%] left-[35%]">
             <GetSpecialty />
           </div>
         </div>
-        {/* Image opposite the text */}
-        <div className="flex-1 mt-4 sm:mt-0 sm:w-1/2">
-          {/* Container with larger height for generated content */}
-          <div className="flex justify-center items-center h-[400px] bg-gray-800 text-white p-4 rounded-lg shadow-md">
-            {selectedSpecialty ? (
-              <p className="text-lg font-semibold">
-                You have selected:{" "}
-                <span className="text-blue-500">{selectedSpecialty}</span>
-              </p>
-            ) : (
-              <p className="text-lg text-gray-400">
-                Generated content will appear here.
-              </p>
-            )}
-          </div>
+
+        {/* Right Section: Generated Content */}
+        <div className="relative flex items-center justify-center bg-gray-800 text-white p-4 rounded-lg shadow-md">
+          {/* Icons positioned at the top-left corner */}
+          {generatedContent && (
+            <div className="absolute top-2 left-2 flex space-x-2">
+              <button
+                onClick={handleCopy}
+                className="text-white p-1 rounded hover:bg-gray-700"
+              >
+                <FiClipboard className="h-6 w-6" />
+              </button>
+              <button
+                onClick={handleShare}
+                className="text-white p-1 rounded hover:bg-gray-700"
+              >
+                <FiShare2 className="h-6 w-6" />
+              </button>
+            </div>
+          )}
+
+          {/* Conditional rendering of content */}
+          {loading ? (
+            <p className="text-lg font-semibold text-blue-500">
+              <BounceLoader color="#fff" />
+            </p>
+          ) : generatedContent ? (
+            <p
+              className={`${styles.paragraph} text-lg font-semibold whitespace-pre-wrap overflow-auto`}
+              style={{
+                minHeight: "150px", // You can adjust this value as needed
+                maxHeight: "500px", // Maximum height before scrolling starts
+              }}
+            >
+              {generatedContent}
+            </p>
+          ) : error ? (
+            <p className="text-lg font-semibold text-red-500">{error}</p>
+          ) : (
+            <p className="text-lg text-gray-400 text-center">
+              Generated content will appear here.
+            </p>
+          )}
         </div>
       </div>
 
-      <div className="flex flex-col items-center justify-center w-full my-6">
+      {/* Dropdown and Generate Button */}
+      <div className="flex flex-col items-center justify-center w-full mt-[80px]">
+        {/* Dropdown */}
         <select
           value={selectedSpecialty}
           onChange={handleSelectChange}
-          className={`${styles.paragraph} p-4 bg-gray-700 text-xl text-white rounded outline-none mt-4`}
+          className="w-full sm:w-[400px] p-4 bg-gray-800 text-lg text-white rounded-lg border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
         >
           <option value="" disabled>
             Select a specialty
           </option>
           {specialties.map((specialty) => (
-            <option key={specialty} value={specialty}>
+            <option
+              key={specialty}
+              value={specialty}
+              className="hover:bg-blue-700"
+            >
               {specialty}
             </option>
           ))}
         </select>
 
+        {/* Selected Specialty */}
         {selectedSpecialty && (
-          <p className={`${styles.paragraph} mt-4`}>
-            You have selected: {selectedSpecialty}
+          <p className="mt-4 text-lg text-white">
+            You have selected:{" "}
+            <span className="font-semibold text-blue-500">
+              {selectedSpecialty}
+            </span>
           </p>
         )}
+
+        {/* Generate Button */}
         <button
           onClick={handleGenerateClick}
-          className="mt-4 p-4 bg-blue-500 text-white rounded w-[400px]"
-          disabled={!selectedSpecialty}
+          className="mt-6 p-4 bg-blue-600 text-white text-xl font-poppins font-semibold rounded-lg w-full sm:w-[400px] hover:bg-blue-700 transition duration-200"
+          disabled={!selectedSpecialty || loading}
         >
-          Generate
+          {loading ? <BeatLoader color="#fff" /> : "Generate"}
         </button>
       </div>
     </div>
