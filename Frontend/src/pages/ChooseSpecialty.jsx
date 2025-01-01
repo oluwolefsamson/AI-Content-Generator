@@ -82,24 +82,20 @@ const ChooseSpecialty = () => {
         {/* Left Section */}
 
         <div className="flex flex-col items-start md">
-          <div
-            className="flex flex-row items-center py-2 px-4 bg-discount-gradient rounded-[10px] mb-2"
-            data-aos="fade-right"
-          >
+          <div className="flex flex-row items-center py-2 px-4 bg-discount-gradient rounded-[10px] mb-2">
             <img src={discount} alt="discount" className="w-[32px] h-[32px]" />
             <p className={`${styles.paragraph} ml-2`}>
               <span className="text-white">10%</span> Discount For{" "}
               <span className="text-white">1 Month</span> Account
             </p>
           </div>
-          <h1 className="font-poppins font-semibold text-[32px] sm:text-[45px] lg:text-[65px] text-white leading-[1.2] mt-6 sm:mt-[10%]">
-            Choose Your
-            <br />
-            <span className="text-gradient">Tech</span> <br />
+          <h1 className="font-poppins font-semibold text-[35px] sm:text-[45px] lg:text-[65px] text-white leading-[1.2]  sm:mt-[10%]">
+            <span>Choose Your</span>
+            <p className="text-gradient my-8">Tech</p>
             <span>Specialty</span>
           </h1>
           {/* GetSpecialty - Hidden on Mobile */}
-          <div className="hidden sm:block absolute top-[20%] left-[35%]">
+          <div className="hidden sm:block absolute top-[20%] left-[38%]">
             <GetSpecialty />
           </div>
         </div>
@@ -184,7 +180,7 @@ const ChooseSpecialty = () => {
         {/* Generate Button */}
         <button
           onClick={handleGenerateClick}
-          className="mt-6 p-4 bg-blue-600 text-white text-xl font-poppins font-semibold rounded-lg w-full sm:w-[400px] hover:bg-blue-700 transition duration-200"
+          className="cursor-pointer mt-6 p-4 bg-blue-600 text-white text-xl font-poppins font-semibold rounded-lg w-full sm:w-[400px] hover:bg-blue-700 transition duration-200"
           disabled={!selectedSpecialty || loading}
         >
           {loading ? <BeatLoader color="#fff" /> : "Generate"}

@@ -4,16 +4,14 @@ import NotFoundPage from "../pages/NotFoundPage";
 import HomePage from "../pages/HomePage";
 import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
-import LandingPage from "../pages/LandingPage";
 import PrivateRoute from "../components/PrivateRoute";
 import ChooseSpecialty from "../pages/ChooseSpecialty";
 
 const AppRouter = () => {
   return (
     <Routes>
-      <Route path="/" element={<LandingPage />} />
       <Route
-        path="/home"
+        path="/"
         element={
           <PrivateRoute>
             <HomePage />

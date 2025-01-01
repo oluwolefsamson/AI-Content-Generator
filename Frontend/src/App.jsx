@@ -15,7 +15,7 @@ const App = () => {
   const isAuthenticated = useAuth();
 
   // Define paths where Navbar and Footer should be hidden
-  const hiddenPaths = ["/", "/login", "/register", "*"];
+  const hiddenPaths = ["/login", "/register", "*"];
   // Define paths where Navbar and Footer should always be shown
   const alwaysShowPaths = ["/404"];
 
@@ -27,8 +27,13 @@ const App = () => {
     return <Navigate to="/login" />;
   }
 
+  // Set background color based on the current route
+  const isAuthPage =
+    location.pathname === "/login" || location.pathname === "/register";
+  const backgroundColor = isAuthPage ? "bg-white" : "bg-black";
+
   return (
-    <div className="bg-black w-full overflow-hidden">
+    <div className={`${backgroundColor} w-full overflow-hidden`}>
       {!isHiddenPage || isAlwaysShowPage ? (
         <div className={`${styles.paddingX} ${styles.flexCenter}`}>
           <div className={`${styles.boxWidth}`}>
@@ -36,7 +41,7 @@ const App = () => {
           </div>
         </div>
       ) : null}
-      <div className={`bg-black ${styles.flexStart}`}>
+      <div className={`${styles.flexStart}`}>
         <div className={`${styles.boxWidth}`}>
           <AppRouter />
         </div>

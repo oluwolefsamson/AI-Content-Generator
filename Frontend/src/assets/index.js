@@ -26,6 +26,7 @@ import people03 from "./people03.png";
 import registerImg from "./registerImg.gif";
 import errorPage from "./errorPage.jpg";
 import heroImg from "./heroImg.png";
+import loginVid from "./loginVid.mp4";
 
 export {
   airbnb,
@@ -56,4 +57,5 @@ export {
   registerImg,
   errorPage,
   heroImg,
+  loginVid,
 };

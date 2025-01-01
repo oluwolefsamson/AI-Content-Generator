@@ -12,6 +12,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.33.1",
     "@huggingface/inference": "^2.8.1",
     "axios": "^1.7.9",
     "bcryptjs": "^2.4.3",
