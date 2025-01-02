@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { DotLoader } from "react-spinners";
-import styles from "../style";
 import loginVid from "../assets/loginVid.mp4";
+import LoginText from "../components/LoginText";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -40,11 +40,16 @@ const Login = () => {
         autoPlay
         loop
         muted
-        className="absolute inset-0 h-full w-full object-cover lg:opacity-70  "
+        className="absolute inset-0 h-full w-full object-cover lg:opacity-70 sm:opacity-70 "
       >
         <source src={loginVid} type="video/mp4" />
         Your browser does not support the video tag.
       </video>
+
+      {/* Left text */}
+      <div className="hidden md:block bg-primaryColor rounded-l-lg">
+        <LoginText />
+      </div>
 
       {/* Login Form */}
       <div className="md:mr-11 w-full py-6 px-6 max-w-[570px] bg-white mx-auto rounded-lg shadow-2xl md:p-10 z-10  ">

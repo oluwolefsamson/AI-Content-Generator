@@ -138,3 +138,39 @@
   background: rgba(255, 255, 255, 0.6);
   filter: blur(300px);
 }
+
+/* LoginText.css */
+
+/* Define the zigzag wave animation */
+@keyframes wave {
+  0% {
+    transform: translateY(0);
+  }
+  25% {
+    transform: translateY(-15px); /* Move up */
+  }
+  50% {
+    transform: translateY(0); /* Return to normal position */
+  }
+  75% {
+    transform: translateY(15px); /* Move down */
+  }
+  100% {
+    transform: translateY(0); /* Return to normal position */
+  }
+}
+
+/* Apply the animation to individual letters */
+.moving-letter {
+  display: inline-block;
+  animation: wave 1.5s ease-in-out infinite; /* Adjust timing here */
+}
+
+/* Add slight delay to each letter for a more water-like effect */
+.moving-letter:nth-child(odd) {
+  animation-delay: 0s;
+}
+
+.moving-letter:nth-child(even) {
+  animation-delay: 0.3s; /* Adjust delay for zigzag */
+}
