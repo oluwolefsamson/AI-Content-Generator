@@ -58,7 +58,7 @@ const generateDynamicContent = async (req, res) => {
 
     // Call Hugging Face API
     const apiResponse = await axios.post(
-      "https://api-inference.huggingface.co/models/gpt2",
+      `${process.env.VITE_HUGGINGFACE_MODEL_URL}`,
       { inputs: specialtyPrompt },
       {
         headers: {
