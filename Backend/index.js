@@ -2,7 +2,7 @@ const express = require("express");
 const connectDB = require("./Utils/db");
 const cors = require("cors");
 const contentRoutes = require("./routes/contentRoutes");
-
+const authRoutes = require("./routes/auth");
 require("dotenv").config();
 
 const app = express();
@@ -25,6 +25,7 @@ connectDB();
 
 // Use routes
 app.use("/api/content", contentRoutes);
+app.use("/api/auth", authRoutes);
 
 app.get("/", (req, res) => {
   res.send("Welcome to the Dynamic Content Generator API");

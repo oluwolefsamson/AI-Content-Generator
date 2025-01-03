@@ -19,9 +19,9 @@ const AppRouter = () => {
         }
       />
 
-      <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
-      <Route path="/specialty" element={<ChooseSpecialty />} />
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/specialty/:userId" element={<ChooseSpecialty />} />
       <Route path="/*" element={<NotFoundPage />} />
     </Routes>
   );

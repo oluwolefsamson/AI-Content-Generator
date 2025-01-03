@@ -1,6 +1,7 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
+require("dotenv").config(); // To access .env file
 
 // Register a new user
 const registerUser = async (req, res) => {
@@ -27,11 +28,24 @@ const registerUser = async (req, res) => {
     await newUser.save();
 
     // Generate JWT token
-    const token = jwt.sign({ userId: newUser._id }, "your_jwt_secret", {
-      expiresIn: "1h",
-    });
+    const token = jwt.sign(
+      { userId: newUser._id },
+      process.env.JWT_SECRET_KEY,
+      {
+        expiresIn: "1h",
+      }
+    );
 
-    res.json({ token });
+    // Respond with token and user data (including the user ID)
+    res.json({
+      token,
+      user: {
+        userId: newUser._id, // Add the user ID here
+        username: newUser.username,
+        email: newUser.email,
+        specialty: newUser.specialty,
+      },
+    });
   } catch (err) {
     console.error(err);
     res.status(500).send("Server error");
@@ -53,11 +67,21 @@ const loginUser = async (req, res) => {
       return res.status(400).json({ msg: "Invalid credentials" });
     }
 
-    const token = jwt.sign({ userId: user._id }, "your_jwt_secret", {
+    // Generate JWT token
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET_KEY, {
       expiresIn: "1h",
     });
 
-    res.json({ token });
+    // Respond with token and user data (including the user ID)
+    res.json({
+      token,
+      user: {
+        userId: user._id, // Add the user ID here
+        username: user.username,
+        email: user.email,
+        specialty: user.specialty,
+      },
+    });
   } catch (err) {
     console.error(err);
     res.status(500).send("Server error");

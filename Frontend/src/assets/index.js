@@ -27,7 +27,7 @@ import registerImg from "./registerImg.gif";
 import errorPage from "./errorPage.jpg";
 import heroImg from "./heroImg.png";
 import loginVid from "./loginVid.mp4";
-
+import speImg from "./speImg.jpg";
 export {
   airbnb,
   bill,
@@ -58,4 +58,5 @@ export {
   errorPage,
   heroImg,
   loginVid,
+  speImg,
 };

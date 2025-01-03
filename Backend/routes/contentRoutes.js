@@ -3,13 +3,14 @@ const {
   generateDynamicContent,
   getAllGeneratedContent,
 } = require("../controllers/contentController");
+const authenticate = require("../middlewares/authMiddleware");
 
 const router = express.Router();
 
-// Route to generate content
+// Protecting the /generate route
 router.post("/generate", generateDynamicContent);
 
-// Route to get all generated content
+// Protecting the / route (to get all generated content)
 router.get("/", getAllGeneratedContent);
 
 module.exports = router;

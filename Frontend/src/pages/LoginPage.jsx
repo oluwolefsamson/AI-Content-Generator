@@ -1,6 +1,8 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { DotLoader } from "react-spinners";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser } from "../../src/redux/userRelated/authSlice";
 import loginVid from "../assets/loginVid.mp4";
 import LoginText from "../components/LoginText";
 
@@ -8,7 +10,18 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { user, isLoading, error } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    // If the user is already logged in (i.e., user exists in Redux state), navigate to another page
+    if (user) {
+      // Redirect to the "specialty" page with userId appended to the URL
+      navigate(`/specialty/${user.userId}`);
+    }
+  }, [user, navigate]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -25,12 +38,16 @@ const Login = () => {
 
   const submitHandler = (event) => {
     event.preventDefault();
-    setLoading(true);
-    // Simulate login loading
-    setTimeout(() => {
-      setLoading(false);
-      alert(`Email: ${email}, Password: ${password}`);
-    }, 2000);
+    dispatch(loginUser({ email, password })).then((result) => {
+      if (result.type === "auth/loginUser/fulfilled") {
+        // After successful login, you can use the userId here
+        const userId = result.payload.user.userId; // Get userId from the response
+        console.log("Logged in User ID:", userId); // Optionally log it or use it for any other logic
+
+        // Navigate to the specialty page after login with userId in URL
+        navigate(`/specialty/${userId}`);
+      }
+    });
   };
 
   return (
@@ -40,7 +57,7 @@ const Login = () => {
         autoPlay
         loop
         muted
-        className="absolute inset-0 h-full w-full object-cover lg:opacity-70 sm:opacity-70 "
+        className="absolute inset-0 h-full w-full object-cover lg:opacity-70 sm:opacity-70"
       >
         <source src={loginVid} type="video/mp4" />
         Your browser does not support the video tag.
@@ -52,8 +69,8 @@ const Login = () => {
       </div>
 
       {/* Login Form */}
-      <div className="md:mr-11 w-full py-6 px-6 max-w-[570px] bg-white mx-auto rounded-lg shadow-2xl md:p-10 z-10  ">
-        <h3 className="font-poppins font-bold ss:text-[25px]  text-[22px] leading-9  mb-10">
+      <div className="md:mr-11 w-full py-6 px-6 max-w-[570px] bg-white mx-auto rounded-lg shadow-2xl md:p-10 z-10">
+        <h3 className="font-poppins font-bold ss:text-[25px] text-[22px] leading-9 mb-10">
           Hello User! <span className="text-blue-500">Welcome Back</span>
         </h3>
 
@@ -97,16 +114,16 @@ const Login = () => {
             </label>
           </div>
 
+          {error && <p className="text-red-500 text-center mb-3">{error}</p>}
+
           <div className="mt-7">
-            <Link to="/specialty">
-              <button
-                type="submit"
-                className="cusor:pointer w-full bg-blue-600 text-white text-[18px] leading-[30px] rounded-lg px-4 py-3"
-                disabled={loading}
-              >
-                {loading ? <DotLoader size={25} color="white" /> : "Login"}
-              </button>
-            </Link>
+            <button
+              type="submit"
+              className="cusor:pointer w-full bg-blue-600 text-white text-[18px] leading-[30px] rounded-lg px-4 py-3"
+              disabled={isLoading}
+            >
+              {isLoading ? <DotLoader size={25} color="white" /> : "Login"}
+            </button>
           </div>
 
           <p className="mt-5 text-textColor text-center">

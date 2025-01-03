@@ -7,7 +7,7 @@ import {
 import { FiClipboard, FiShare2 } from "react-icons/fi";
 import { BounceLoader, BeatLoader } from "react-spinners";
 import styles from "../style";
-import { discount } from "../assets";
+import { discount, speImg } from "../assets";
 import GetSpecialty from "../components/GetSpecialty";
 
 const specialties = [
@@ -27,10 +27,10 @@ const ChooseSpecialty = () => {
   const { selectedSpecialty, generatedContent, loading, error } = useSelector(
     (state) => state.specialty
   );
+  const { user } = useSelector((state) => state.auth);
 
-  const handleSelectChange = (event) => {
-    dispatch(setSelectedSpecialty(event.target.value));
-  };
+  const handleSelectChange = (e) =>
+    dispatch(setSelectedSpecialty(e.target.value));
 
   const handleGenerateClick = () => {
     if (selectedSpecialty) {
@@ -57,6 +57,15 @@ const ChooseSpecialty = () => {
 
   return (
     <div className="flex flex-col items-center min-h-screen bg-black text-white p-4 sm:p-8 relative my-[80px] mx-10">
+      {/* Welcome message */}
+      <div className="flex text-start mb-[70px]">
+        <h2
+          className={`text-2xl font-semibold text-white  ${styles.paragraph}`}
+        >
+          Welcome,{" "}
+          <span className="text-blue-500">{user ? user.name : "Guest"}</span>!
+        </h2>
+      </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full">
         <div className="flex flex-col items-start md">
           <div className="flex flex-row items-center py-2 px-4 bg-discount-gradient rounded-[10px] mb-2">
@@ -71,7 +80,7 @@ const ChooseSpecialty = () => {
             <p className="text-gradient my-8">Tech</p>
             <span>Specialty</span>
           </h1>
-          <div className="hidden sm:block absolute top-[20%] left-[38%]">
+          <div className="hidden sm:block absolute top-[30%] left-[38%]">
             <GetSpecialty />
           </div>
         </div>
@@ -95,12 +104,14 @@ const ChooseSpecialty = () => {
           {loading ? (
             <BounceLoader color="#fff" size={200} />
           ) : generatedContent ? (
-            <p
-              className={`${styles.paragraph} text-lg font-semibold whitespace-pre-wrap overflow-auto`}
-              style={{ minHeight: "150px", maxHeight: "500px" }}
+            <div
+              className="text-lg font-semibold whitespace-pre-wrap overflow-auto overflow-y-scroll h-72 p-4 rounded-lg border border-gray-600 shadow-lg bg-cover bg-center bg-no-repeat text-gray-100 leading-relaxed"
+              style={{
+                backgroundImage: `url(${speImg})`, // Image from public folder
+              }}
             >
               {generatedContent}
-            </p>
+            </div>
           ) : error ? (
             <p className="text-lg font-semibold text-red-500">{error}</p>
           ) : (
@@ -138,7 +149,7 @@ const ChooseSpecialty = () => {
           className="cursor-pointer mt-6 p-4 bg-blue-600 text-white text-xl font-poppins font-semibold rounded-lg w-full sm:w-[400px] hover:bg-blue-700 transition duration-200"
           disabled={!selectedSpecialty || loading}
         >
-          {loading ? <BeatLoader color="#fff" size={10} /> : "Generate"}
+          {loading ? <BeatLoader color="#fff" /> : "Generate"}
         </button>
       </div>
     </div>
